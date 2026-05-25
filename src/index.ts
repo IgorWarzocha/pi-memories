@@ -16,7 +16,6 @@ type Config = {
   timeoutMs: number;
   includeProjectContext: boolean;
   minUserMessagesWithoutBlob: number;
-  debug: boolean;
 };
 
 type NativeCompactionEntry = {
@@ -86,7 +85,6 @@ function defaultConfig(): Config {
     timeoutMs: 120_000,
     includeProjectContext: true,
     minUserMessagesWithoutBlob: 3,
-    debug: true,
   };
 }
 
@@ -110,7 +108,6 @@ function loadConfig(): Config {
     const raw = JSON.parse(readFileSync(path, "utf8"));
     return { ...base, ...raw };
   } catch {
-    appendFileSync(join(getAgentDir(), "pi-memories.log"), `[${new Date().toISOString()}] invalid config at ${path}; using defaults\n`, "utf8");
     return base;
   }
 }
@@ -127,10 +124,9 @@ function isNativeCompactionEntry(entry: unknown): entry is NativeCompactionEntry
 }
 
 function logDebug(config: Config, message: string): void {
-  if (!config.debug) return;
-  const logPath = join(getAgentDir(), "pi-memories.log");
-  mkdirSync(dirname(logPath), { recursive: true });
-  appendFileSync(logPath, `[${new Date().toISOString()}] ${message}\n`, "utf8");
+  void config;
+  void message;
+  return;
 }
 
 function findLatestNativeCompaction(branch: readonly unknown[]): { entry: NativeCompactionEntry; index: number } | undefined {
@@ -337,7 +333,7 @@ export default function piMemories(pi: ExtensionAPI) {
       ctx.ui.setEditorText(
         `Review ${config.inboxPath} and decide whether any candidates should be promoted into global or project AGENTS.md.
 
-Treat the inbox as candidates, not truth. Promote only durable memories useful over coming days, weeks, or months. Prefer user preferences, communication style, durable workflow habits, identity, and project conventions. Discard temporary task progress, implementation minutiae, duplicate notes, obvious summaries, secrets, credentials, tokens, and sensitive personal data. Merge new memories into existing bullets instead of accumulating near-duplicates. Keep promoted memories short, concrete, and easy to delete later.`,
+Treat the inbox as candidates, not truth. Promote only durable memories useful over coming days, weeks, or months. Prefer user preferences, communication style, durable workflow habits, identity, and project conventions. Discard temporary task progress, implementation minutiae, duplicate notes, obvious summaries, secrets, credentials, tokens, and sensitive personal data. Merge new memories into existing bullets instead of accumulating near-duplicates. Keep promoted memories short, concrete, and easy to delete later. When done, leave the inbox file empty. Do not leave review logs, comments, markers, or commentary in memory-inbox.md.`,
       );
     },
   });

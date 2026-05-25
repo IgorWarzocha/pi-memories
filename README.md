@@ -66,8 +66,7 @@ Example:
   "inboxPath": "/home/you/.pi/agent/memory-inbox.md",
   "timeoutMs": 120000,
   "includeProjectContext": true,
-  "minUserMessagesWithoutBlob": 3,
-  "debug": false
+  "minUserMessagesWithoutBlob": 3
 }
 ```
 
@@ -82,7 +81,6 @@ Example:
 | `timeoutMs` | `120000` | Max time to wait for the ephemeral Pi run. |
 | `includeProjectContext` | `true` | Keep project `AGENTS.md` / `CLAUDE.md` context. Set false to use only the explicit memory prompt. |
 | `minUserMessagesWithoutBlob` | `3` | If there is no compaction, skip sessions with fewer user messages than this. |
-| `debug` | `true` | Write debug logs to `~/.pi/agent/pi-memories.log`. |
 
 ## Recommended AGENTS.md setup
 
